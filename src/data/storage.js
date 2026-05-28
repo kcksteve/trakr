@@ -1,0 +1,55 @@
+import { STORAGE_KEY } from '../types/goal';
+
+/**
+ * Data layer for goal operations.
+ * All functions are abstracted so they can be swapped for API calls later.
+ */
+
+function loadFromStorage() {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveToStorage(goals) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+}
+
+export function getGoals() {
+  return loadFromStorage();
+}
+
+export function addGoal(goal) {
+  const goals = loadFromStorage();
+  const newGoal = {
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+    ...goal,
+  };
+  goals.unshift(newGoal);
+  saveToStorage(goals);
+  return newGoal;
+}
+
+export function updateGoal(id, updates) {
+  const goals = loadFromStorage();
+  const index = goals.findIndex((g) => g.id === id);
+  if (index === -1) return null;
+
+  goals[index] = { ...goals[index], ...updates };
+  saveToStorage(goals);
+  return goals[index];
+}
+
+export function deleteGoal(id) {
+  const goals = loadFromStorage();
+  const filtered = goals.filter((g) => g.id !== id);
+  saveToStorage(filtered);
+}
+
+export function moveGoal(id, newStatus) {
+  return updateGoal(id, { status: newStatus });
+}
