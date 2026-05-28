@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import { getGoals, addGoal, updateGoal, deleteGoal, moveGoal } from './data/storage';
-import { STATUSES } from './types/goal';
+import { getPriorities, addPriority, updatePriority, deletePriority, movePriority } from './data/storage';
+import { STATUSES } from './types/priority';
 import KanbanBoard from './components/KanbanBoard';
-import AddGoalForm from './components/AddGoalForm';
+import AddPriorityForm from './components/AddPriorityForm';
 
-function sendInProgressEmail(goals) {
-  const inProgress = goals.filter((g) => g.status === STATUSES.IN_PROGRESS);
+function sendInProgressEmail(priorities) {
+  const inProgress = priorities.filter((p) => p.status === STATUSES.IN_PROGRESS);
   if (inProgress.length === 0) {
-    alert('No in-progress goals to email.');
+    alert('No in-progress priorities to email.');
     return;
   }
 
-  const lines = inProgress.map((g, i) => {
-    const parts = [`${i + 1}. ${g.title}`];
-    if (g.goal) parts.push(`   ${g.goal}`);
-    if (g.referenceLink) parts.push(`   Link: ${g.referenceLink}`);
+  const lines = inProgress.map((p, i) => {
+    const parts = [`${i + 1}. ${p.title}`];
+    if (p.description) parts.push(`   ${p.description}`);
+    if (p.referenceLink) parts.push(`   Link: ${p.referenceLink}`);
     return parts.join('\n');
   });
 
@@ -24,28 +24,28 @@ function sendInProgressEmail(goals) {
 }
 
 export default function App() {
-  const [goals, setGoals] = useState(() => getGoals());
+  const [priorities, setPriorities] = useState(() => getPriorities());
   const [showAddForm, setShowAddForm] = useState(false);
 
-  const handleAddGoal = (goal) => {
-    addGoal(goal);
-    setGoals(getGoals());
+  const handleAddPriority = (priority) => {
+    addPriority(priority);
+    setPriorities(getPriorities());
     setShowAddForm(false);
   };
 
-  const handleUpdateGoal = (id, updates) => {
-    updateGoal(id, updates);
-    setGoals(getGoals());
+  const handleUpdatePriority = (id, updates) => {
+    updatePriority(id, updates);
+    setPriorities(getPriorities());
   };
 
-  const handleDeleteGoal = (id) => {
-    deleteGoal(id);
-    setGoals(getGoals());
+  const handleDeletePriority = (id) => {
+    deletePriority(id);
+    setPriorities(getPriorities());
   };
 
-  const handleMoveGoal = (id, newStatus) => {
-    moveGoal(id, newStatus);
-    setGoals(getGoals());
+  const handleMovePriority = (id, newStatus) => {
+    movePriority(id, newStatus);
+    setPriorities(getPriorities());
   };
 
   return (
@@ -57,7 +57,7 @@ export default function App() {
           </h1>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => sendInProgressEmail(goals)}
+              onClick={() => sendInProgressEmail(priorities)}
               className="px-4 py-2 border border-gray-600 text-gray-300 rounded-lg font-medium hover:bg-gray-700 transition-colors flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,7 +69,7 @@ export default function App() {
               onClick={() => setShowAddForm(true)}
               className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-medium hover:from-primary-600 hover:to-accent-600 transition-all shadow-md hover:shadow-lg"
             >
-              + Add Goal
+              + Add Priority
             </button>
           </div>
         </div>
@@ -77,16 +77,16 @@ export default function App() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <KanbanBoard
-          goals={goals}
-          onMove={handleMoveGoal}
-          onUpdate={handleUpdateGoal}
-          onDelete={handleDeleteGoal}
+          priorities={priorities}
+          onMove={handleMovePriority}
+          onUpdate={handleUpdatePriority}
+          onDelete={handleDeletePriority}
         />
       </main>
 
       {showAddForm && (
-        <AddGoalForm
-          onAdd={handleAddGoal}
+        <AddPriorityForm
+          onAdd={handleAddPriority}
           onCancel={() => setShowAddForm(false)}
         />
       )}

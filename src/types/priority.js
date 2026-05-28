@@ -10,4 +10,4 @@ export const STATUS_LABELS = {
   completed: 'Completed',
 };
 
-export const STORAGE_KEY = 'trakr-goals';
+export const STORAGE_KEY = 'trakr-priorities';

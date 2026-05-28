@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import { STATUSES, STATUS_LABELS } from '../types/goal';
-import GoalEditor from './GoalEditor';
+import { STATUSES, STATUS_LABELS } from '../types/priority';
+import PriorityEditor from './PriorityEditor';
 
-export default function GoalCard({ goal, onMove, onUpdate, onDelete }) {
+export default function PriorityCard({ priority, onMove, onUpdate, onDelete }) {
   const [editing, setEditing] = useState(false);
 
   if (editing) {
     return (
-      <GoalEditor
-        goal={goal}
+      <PriorityEditor
+        priority={priority}
         onSave={(updates) => {
-          onUpdate(goal.id, updates);
+          onUpdate(priority.id, updates);
           setEditing(false);
         }}
         onCancel={() => setEditing(false)}
-        onDelete={() => onDelete(goal.id)}
+        onDelete={() => onDelete(priority.id)}
       />
     );
   }
@@ -23,7 +23,7 @@ export default function GoalCard({ goal, onMove, onUpdate, onDelete }) {
     <div className="bg-gray-800 rounded-lg border border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold text-gray-100 text-sm leading-tight">
-          {goal.title}
+          {priority.title}
         </h3>
         <button
           onClick={() => setEditing(true)}
@@ -36,13 +36,13 @@ export default function GoalCard({ goal, onMove, onUpdate, onDelete }) {
         </button>
       </div>
 
-      {goal.goal && (
-        <p className="text-gray-400 text-xs mt-2 line-clamp-3">{goal.goal}</p>
+      {priority.description && (
+        <p className="text-gray-400 text-xs mt-2 line-clamp-3">{priority.description}</p>
       )}
 
-      {goal.referenceLink && (
+      {priority.referenceLink && (
         <a
-          href={goal.referenceLink}
+          href={priority.referenceLink}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1 mt-2 text-xs text-primary-400 hover:text-primary-300 transition-colors"
@@ -56,8 +56,8 @@ export default function GoalCard({ goal, onMove, onUpdate, onDelete }) {
 
       <div className="mt-3">
         <select
-          value={goal.status}
-          onChange={(e) => onMove(goal.id, e.target.value)}
+          value={priority.status}
+          onChange={(e) => onMove(priority.id, e.target.value)}
           className="w-full text-xs border border-gray-600 rounded-md px-2 py-1 bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
         >
           {Object.entries(STATUS_LABELS).map(([key, label]) => (

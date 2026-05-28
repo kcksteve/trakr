@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "A kanban-style goal tracking application",
+  "description": "A kanban-style priority tracking application",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

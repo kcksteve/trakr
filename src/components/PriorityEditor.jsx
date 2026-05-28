@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { STATUSES, STATUS_LABELS } from '../types/goal';
+import { STATUSES, STATUS_LABELS } from '../types/priority';
 
-export default function GoalEditor({ goal, onSave, onCancel, onDelete }) {
-  const [title, setTitle] = useState(goal.title);
-  const [goalText, setGoalText] = useState(goal.goal || '');
-  const [referenceLink, setReferenceLink] = useState(goal.referenceLink || '');
-  const [status, setStatus] = useState(goal.status);
+export default function PriorityEditor({ priority, onSave, onCancel, onDelete }) {
+  const [title, setTitle] = useState(priority.title);
+  const [description, setDescription] = useState(priority.description || '');
+  const [referenceLink, setReferenceLink] = useState(priority.referenceLink || '');
+  const [status, setStatus] = useState(priority.status);
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -13,14 +13,14 @@ export default function GoalEditor({ goal, onSave, onCancel, onDelete }) {
 
     onSave({
       title: title.trim(),
-      goal: goalText.trim(),
+      description: description.trim(),
       referenceLink: referenceLink.trim(),
       status,
     });
   };
 
   const handleDelete = () => {
-    if (window.confirm('Delete this goal?')) {
+    if (window.confirm('Delete this priority?')) {
       onDelete();
     }
   };
@@ -40,10 +40,10 @@ export default function GoalEditor({ goal, onSave, onCancel, onDelete }) {
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-400 mb-1">Goal</label>
+          <label className="block text-xs font-medium text-gray-400 mb-1">Priority</label>
           <textarea
-            value={goalText}
-            onChange={(e) => setGoalText(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             rows={2}
             className="w-full border border-gray-600 rounded-md px-2 py-1.5 text-sm bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
           />

@@ -1,7 +1,7 @@
-import { STORAGE_KEY } from '../types/goal';
+import { STORAGE_KEY } from '../types/priority';
 
 /**
- * Data layer for goal operations.
+ * Data layer for priority operations.
  * All functions are abstracted so they can be swapped for API calls later.
  */
 
@@ -14,42 +14,42 @@ function loadFromStorage() {
   }
 }
 
-function saveToStorage(goals) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(goals));
+function saveToStorage(priorities) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(priorities));
 }
 
-export function getGoals() {
+export function getPriorities() {
   return loadFromStorage();
 }
 
-export function addGoal(goal) {
-  const goals = loadFromStorage();
-  const newGoal = {
+export function addPriority(priority) {
+  const priorities = loadFromStorage();
+  const newPriority = {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
-    ...goal,
+    ...priority,
   };
-  goals.unshift(newGoal);
-  saveToStorage(goals);
-  return newGoal;
+  priorities.unshift(newPriority);
+  saveToStorage(priorities);
+  return newPriority;
 }
 
-export function updateGoal(id, updates) {
-  const goals = loadFromStorage();
-  const index = goals.findIndex((g) => g.id === id);
+export function updatePriority(id, updates) {
+  const priorities = loadFromStorage();
+  const index = priorities.findIndex((p) => p.id === id);
   if (index === -1) return null;
 
-  goals[index] = { ...goals[index], ...updates };
-  saveToStorage(goals);
-  return goals[index];
+  priorities[index] = { ...priorities[index], ...updates };
+  saveToStorage(priorities);
+  return priorities[index];
 }
 
-export function deleteGoal(id) {
-  const goals = loadFromStorage();
-  const filtered = goals.filter((g) => g.id !== id);
+export function deletePriority(id) {
+  const priorities = loadFromStorage();
+  const filtered = priorities.filter((p) => p.id !== id);
   saveToStorage(filtered);
 }
 
-export function moveGoal(id, newStatus) {
-  return updateGoal(id, { status: newStatus });
+export function movePriority(id, newStatus) {
+  return updatePriority(id, { status: newStatus });
 }
