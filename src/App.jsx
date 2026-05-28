@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { getPriorities, addPriority, updatePriority, deletePriority, movePriority } from './data/storage';
+import { getGoals, addGoal, deleteGoal } from './data/goalStorage';
 import { STATUSES } from './types/priority';
 import KanbanBoard from './components/KanbanBoard';
 import AddPriorityForm from './components/AddPriorityForm';
+import ManageGoalsModal from './components/ManageGoalsModal';
 
 function sendInProgressEmail(priorities) {
   const inProgress = priorities.filter((p) => p.status === STATUSES.IN_PROGRESS);
@@ -25,7 +27,19 @@ function sendInProgressEmail(priorities) {
 
 export default function App() {
   const [priorities, setPriorities] = useState(() => getPriorities());
+  const [goals, setGoals] = useState(() => getGoals());
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showManageGoals, setShowManageGoals] = useState(false);
+
+  const handleAddGoal = (name) => {
+    addGoal(name);
+    setGoals(getGoals());
+  };
+
+  const handleDeleteGoal = (id) => {
+    deleteGoal(id);
+    setGoals(getGoals());
+  };
 
   const handleAddPriority = (priority) => {
     addPriority(priority);
@@ -66,6 +80,15 @@ export default function App() {
               Email Status Update
             </button>
             <button
+              onClick={() => setShowManageGoals(true)}
+              className="px-4 py-2 border border-gray-600 text-gray-300 rounded-lg font-medium hover:bg-gray-700 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              Manage Goals
+            </button>
+            <button
               onClick={() => setShowAddForm(true)}
               className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg font-medium hover:from-primary-600 hover:to-accent-600 transition-all shadow-md hover:shadow-lg"
             >
@@ -78,6 +101,7 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <KanbanBoard
           priorities={priorities}
+          goals={goals}
           onMove={handleMovePriority}
           onUpdate={handleUpdatePriority}
           onDelete={handleDeletePriority}
@@ -86,8 +110,18 @@ export default function App() {
 
       {showAddForm && (
         <AddPriorityForm
+          goals={goals}
           onAdd={handleAddPriority}
           onCancel={() => setShowAddForm(false)}
+        />
+      )}
+
+      {showManageGoals && (
+        <ManageGoalsModal
+          goals={goals}
+          onAdd={handleAddGoal}
+          onDelete={handleDeleteGoal}
+          onCancel={() => setShowManageGoals(false)}
         />
       )}
     </div>

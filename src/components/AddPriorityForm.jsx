@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { STATUSES, STATUS_LABELS } from '../types/priority';
 
-export default function AddPriorityForm({ onAdd, onCancel }) {
+export default function AddPriorityForm({ goals, onAdd, onCancel }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [referenceLink, setReferenceLink] = useState('');
   const [status, setStatus] = useState(STATUSES.BACKLOG);
+  const [goalId, setGoalId] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,6 +17,7 @@ export default function AddPriorityForm({ onAdd, onCancel }) {
       description: description.trim(),
       referenceLink: referenceLink.trim(),
       status,
+      goalId,
     });
   };
 
@@ -79,6 +81,22 @@ export default function AddPriorityForm({ onAdd, onCancel }) {
             >
               {Object.entries(STATUS_LABELS).map(([key, label]) => (
                 <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1">
+              Goal
+            </label>
+            <select
+              value={goalId}
+              onChange={(e) => setGoalId(e.target.value)}
+              className="w-full border border-gray-600 rounded-lg px-3 py-2 text-sm bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            >
+              <option value="">None</option>
+              {goals.map((goal) => (
+                <option key={goal.id} value={goal.id}>{goal.name}</option>
               ))}
             </select>
           </div>

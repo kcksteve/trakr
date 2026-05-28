@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { STATUSES, STATUS_LABELS } from '../types/priority';
 
-export default function PriorityEditor({ priority, onSave, onCancel, onDelete }) {
+export default function PriorityEditor({ priority, goals, onSave, onCancel, onDelete }) {
   const [title, setTitle] = useState(priority.title);
   const [description, setDescription] = useState(priority.description || '');
   const [referenceLink, setReferenceLink] = useState(priority.referenceLink || '');
   const [status, setStatus] = useState(priority.status);
+  const [goalId, setGoalId] = useState(priority.goalId || '');
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -16,6 +17,7 @@ export default function PriorityEditor({ priority, onSave, onCancel, onDelete })
       description: description.trim(),
       referenceLink: referenceLink.trim(),
       status,
+      goalId,
     });
   };
 
@@ -60,17 +62,31 @@ export default function PriorityEditor({ priority, onSave, onCancel, onDelete })
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-gray-400 mb-1">Status</label>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="w-full border border-gray-600 rounded-md px-2 py-1.5 text-sm bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-          >
-            {Object.entries(STATUS_LABELS).map(([key, label]) => (
-              <option key={key} value={key}>{label}</option>
-            ))}
-          </select>
-        </div>
+           <label className="block text-xs font-medium text-gray-400 mb-1">Status</label>
+           <select
+             value={status}
+             onChange={(e) => setStatus(e.target.value)}
+             className="w-full border border-gray-600 rounded-md px-2 py-1.5 text-sm bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+           >
+             {Object.entries(STATUS_LABELS).map(([key, label]) => (
+               <option key={key} value={key}>{label}</option>
+             ))}
+           </select>
+         </div>
+
+         <div>
+           <label className="block text-xs font-medium text-gray-400 mb-1">Goal</label>
+           <select
+             value={goalId}
+             onChange={(e) => setGoalId(e.target.value)}
+             className="w-full border border-gray-600 rounded-md px-2 py-1.5 text-sm bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+           >
+             <option value="">None</option>
+             {goals.map((goal) => (
+               <option key={goal.id} value={goal.id}>{goal.name}</option>
+             ))}
+           </select>
+         </div>
       </div>
 
       <div className="flex gap-2 mt-4">

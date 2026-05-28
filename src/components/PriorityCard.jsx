@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { STATUSES, STATUS_LABELS } from '../types/priority';
 import PriorityEditor from './PriorityEditor';
 
-export default function PriorityCard({ priority, onMove, onUpdate, onDelete }) {
+export default function PriorityCard({ priority, goals, onMove, onUpdate, onDelete }) {
   const [editing, setEditing] = useState(false);
 
   if (editing) {
     return (
       <PriorityEditor
         priority={priority}
+        goals={goals}
         onSave={(updates) => {
           onUpdate(priority.id, updates);
           setEditing(false);

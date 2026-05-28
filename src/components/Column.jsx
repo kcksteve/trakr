@@ -1,6 +1,6 @@
 import PriorityCard from './PriorityCard';
 
-export default function Column({ status, label, color, priorities, onMove, onUpdate, onDelete }) {
+export default function Column({ status, label, color, priorities, goals, onMove, onUpdate, onDelete }) {
   return (
     <div className="bg-gray-800/60 backdrop-blur-sm rounded-xl border border-gray-700 shadow-sm">
       <div className={`bg-gradient-to-r ${color} p-3 rounded-t-xl`}>
@@ -19,12 +19,13 @@ export default function Column({ status, label, color, priorities, onMove, onUpd
         ) : (
           priorities.map((priority) => (
             <PriorityCard
-              key={priority.id}
-              priority={priority}
-              onMove={onMove}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
+               key={priority.id}
+               priority={priority}
+               goals={goals}
+               onMove={onMove}
+               onUpdate={onUpdate}
+               onDelete={onDelete}
+             />
           ))
         )}
       </div>
