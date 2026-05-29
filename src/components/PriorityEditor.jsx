@@ -18,6 +18,7 @@ export default function PriorityEditor({ priority, goals, onSave, onCancel, onDe
       referenceLink: referenceLink.trim(),
       status,
       goalId,
+      userId: priority.userId,
     });
   };
 

@@ -1,7 +1,9 @@
 import Column from './Column';
 import { STATUSES, STATUS_LABELS } from '../types/priority';
 
-export default function KanbanBoard({ priorities, goals, onMove, onUpdate, onDelete }) {
+export default function KanbanBoard({ priorities, goals, currentUserId, onMove, onUpdate, onDelete }) {
+  const userPriorities = priorities.filter((p) => p.userId === currentUserId);
+
   const columns = [
     { status: STATUSES.BACKLOG, label: STATUS_LABELS.backlog, color: 'from-gray-400 to-gray-500' },
     { status: STATUSES.IN_PROGRESS, label: STATUS_LABELS['in-progress'], color: 'from-primary-400 to-primary-500' },
@@ -16,7 +18,7 @@ export default function KanbanBoard({ priorities, goals, onMove, onUpdate, onDel
            status={col.status}
            label={col.label}
            color={col.color}
-           priorities={priorities.filter((p) => p.status === col.status)}
+           priorities={userPriorities.filter((p) => p.status === col.status)}
            goals={goals}
            onMove={onMove}
            onUpdate={onUpdate}

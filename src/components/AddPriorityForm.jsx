@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { STATUSES, STATUS_LABELS } from '../types/priority';
 
-export default function AddPriorityForm({ goals, onAdd, onCancel }) {
+export default function AddPriorityForm({ goals, currentUserId, onAdd, onCancel }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [referenceLink, setReferenceLink] = useState('');
@@ -18,6 +18,7 @@ export default function AddPriorityForm({ goals, onAdd, onCancel }) {
       referenceLink: referenceLink.trim(),
       status,
       goalId,
+      userId: currentUserId,
     });
   };
 
